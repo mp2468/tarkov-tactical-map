@@ -1,0 +1,15 @@
+/* We assume you have Tailwind installed and configured correctly.
+   So we need these directives: */
+   @tailwind base;
+   @tailwind components;
+   @tailwind utilities;
+   
+   /* Optionally, you can add additional custom global styles below: */
+   
+   html, body, #root {
+     margin: 0;
+     padding: 0;
+     /* Ensure the full viewport height for the background */
+     height: 100%;
+   }
+   
