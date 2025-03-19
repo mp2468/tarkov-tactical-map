@@ -27,7 +27,8 @@ interface DrawAction {
   start: { x: number; y: number };
   end: { x: number; y: number };
   emoji?: string;
-  expireAt?: number | Infinity;
+  // @ts-ignore should be infinity or number
+  expireAt?: number | Infinity
 }
 
 interface User {
@@ -66,7 +67,7 @@ const TOOL_TYPES: { [key: string]: ToolType } = {
   EMOJI: 'emoji',
 };
 
-const EMOJIS: string[] = ['😀','🤩','🔥','🚀','❤️','👍','🌟','🎉','😂','🤔','❓','💡'];
+const EMOJIS: string[] = ['😀', '🤩', '🔥', '🚀', '❤️', '👍', '🌟', '🎉', '😂', '🤔', '❓', '💡'];
 
 const FADE_OPTIONS = [
   { label: '10 seconds', value: '10s' },
@@ -97,9 +98,9 @@ const CollaborativeDrawingTool: React.FC = () => {
   const [userColor, setUserColor] = useState<string>('');
   const [users, setUsers] = useState<User[]>([]);
 
-  const [activeTool, setActiveTool] = useState<ToolType>('pen');
+  const [activeTool, setActiveTool] = useState<ToolType>('arrow');
   const [selectedEmoji, setSelectedEmoji] = useState<string>(EMOJIS[0]);
-  const [lineWidth, setLineWidth] = useState<number>(2);
+  const [lineWidth, setLineWidth] = useState<number>(10);
   const [fadeSetting, setFadeSetting] = useState<string>('permanent');
   const [drawActions, setDrawActions] = useState<DrawAction[]>([]);
 
