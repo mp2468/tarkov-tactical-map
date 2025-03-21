@@ -627,7 +627,7 @@ const CollaborativeDrawingTool: React.FC = () => {
 
       {/* Top-right flex for Reset Zoom + User list */}
       <div className="absolute top-2 right-2 z-10 flex items-start gap-2">
-        {isZoomed && (
+        {false && ( // if re-enable zoom, then change this false to isZoomed
           <motion.button
             className="bg-gray-700 text-gray-100 border border-gray-600 px-2 py-1 rounded hover:bg-gray-600 text-sm"
             onClick={resetZoom}
