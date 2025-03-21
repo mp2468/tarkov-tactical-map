@@ -196,13 +196,21 @@ const CollaborativeDrawingTool: React.FC = () => {
 
     ctx.save();
     // Translate by -panX, -panY, then scale.
-    ctx.translate(-panX, -panY);
-    ctx.scale(scale, scale);
+    // ctx.translate(-panX, -panY);
+    // ctx.scale(scale, scale);
 
     // Draw background
     if (backgroundImage) {
-      ctx.drawImage(backgroundImage, 0, 0);
+      // ctx.drawImage(backgroundImage, 0, 0);
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      // ...
+      ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
     }
+
+
 
     // Draw each action
     drawActions.forEach((action) => {
@@ -446,7 +454,7 @@ const CollaborativeDrawingTool: React.FC = () => {
         e.preventDefault();
         return;
       }
-  
+
       // Undo if Ctrl+Z or Cmd+Z
       const isCtrlOrCmd = e.ctrlKey || e.metaKey;
       if (isCtrlOrCmd && e.key.toLowerCase() === 'z') {
@@ -455,7 +463,7 @@ const CollaborativeDrawingTool: React.FC = () => {
         return;
       }
     };
-  
+
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
@@ -848,17 +856,17 @@ const CollaborativeDrawingTool: React.FC = () => {
   function drawArrow(ctx: CanvasRenderingContext2D, action: DrawAction) {
     const { x: x1, y: y1 } = action.start;
     const { x: x2, y: y2 } = action.end;
-  
+
     const lw = action.lineWidth;
     const angle = Math.atan2(y2 - y1, x2 - x1);
-  
+
     const dx = x2 - x1;
     const dy = y2 - y1;
     const dist = Math.sqrt(dx * dx + dy * dy);
-  
+
     const headLength = lw * 3;          // arrowhead size
     const lineEndDistance = lw * 1.5;   // how far back we pull the line
-  
+
     // If the distance is extremely small, skip the line or adjust.
     if (dist < lineEndDistance) {
       // We'll place the arrow tip at (x2, y2), but the line won't draw.
@@ -866,22 +874,22 @@ const CollaborativeDrawingTool: React.FC = () => {
       drawArrowHead(ctx, x2, y2, angle, lw, headLength);
       return;
     }
-  
+
     // 1) Draw the shaft from (x1,y1) to the base so the arrowhead doesn't overlap
     const xBase = x2 - lineEndDistance * Math.cos(angle);
     const yBase = y2 - lineEndDistance * Math.sin(angle);
-  
+
     ctx.beginPath();
     ctx.strokeStyle = action.color;
     ctx.lineWidth = lw;
     ctx.moveTo(x1, y1);
     ctx.lineTo(xBase, yBase);
     ctx.stroke();
-  
+
     // 2) Arrowhead from the final tip
     drawArrowHead(ctx, x2, y2, angle, lw, headLength);
   }
-  
+
   function drawArrowHead(
     ctx: CanvasRenderingContext2D,
     xTip: number,
@@ -892,7 +900,7 @@ const CollaborativeDrawingTool: React.FC = () => {
   ) {
     ctx.beginPath();
     ctx.moveTo(xTip, yTip);
-  
+
     ctx.lineTo(
       xTip - headLength * Math.cos(angle - Math.PI / 6),
       yTip - headLength * Math.sin(angle - Math.PI / 6)
@@ -902,12 +910,12 @@ const CollaborativeDrawingTool: React.FC = () => {
       yTip - headLength * Math.sin(angle + Math.PI / 6)
     );
     ctx.closePath();
-  
+
     ctx.fillStyle = ctx.strokeStyle;
     ctx.fill();
   }
-  
-  
+
+
 
   function drawCircle(ctx: CanvasRenderingContext2D, action: DrawAction) {
     const { x: x1, y: y1 } = action.start;
