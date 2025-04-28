@@ -161,7 +161,31 @@ const RealTimeMapApp: React.FC = () => {
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       const preset = THICK_PRESETS[+e.key as 1 | 2 | 3 | 4];
-      if (preset) setLineWidth(preset);
+      if (preset) {
+        setLineWidth(preset);
+        return;
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, []);
+
+  /* ─────────────────────────────── Undo Shortcuts ─────────────────────────── */
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      // Backspace → undo last stroke
+      if (e.key === 'Backspace') {
+        setActions((prev) => prev.slice(0, -1));
+        e.preventDefault();
+        return;
+      }
+
+      // Ctrl/Cmd + Z → undo
+      const isCtrlOrCmd = e.ctrlKey || e.metaKey;
+      if (isCtrlOrCmd && e.key.toLowerCase() === 'z') {
+        setActions((prev) => prev.slice(0, -1));
+        e.preventDefault();
+      }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
